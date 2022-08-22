@@ -1,0 +1,11 @@
+out/
+.idea/
+.idea/.gitignore
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/Project.xml
+out/production/21424045/UI/UIServer$1.class
+out/production/21424045/UI/UIServer.class
