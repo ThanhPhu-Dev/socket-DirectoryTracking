@@ -1,11 +1,7 @@
 package UI;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
