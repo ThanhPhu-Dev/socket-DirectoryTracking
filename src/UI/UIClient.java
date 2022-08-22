@@ -1,5 +1,7 @@
 package UI;
 
+import Util.WatchFile;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +15,8 @@ public class UIClient extends JFrame {
     private JLabel lbPort;
     private JTextField tfIP;
     private JTextField tfPort;
+    private WatchFile watchFile = null;
+
 
     public UIClient(){
         initUI();
@@ -86,11 +90,12 @@ public class UIClient extends JFrame {
             btnKetNoi.setText("Ngắt kết nối");
             tfIP.setEnabled(false);
             tfPort.setEnabled(false);
-
+            watchFile = new WatchFile("D:\\cv");
         }else{
             btnKetNoi.setText("Kết nối");
             tfPort.setEnabled(true);
             tfIP.setEnabled(true);
+            watchFile.terminate();
         }
     }
 

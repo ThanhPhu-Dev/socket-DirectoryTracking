@@ -5,13 +5,16 @@ import java.nio.file.*;
 
 public class WatchFile extends Thread{
     private Path path;
+    private volatile boolean running = true;
+
     public WatchFile(String pathString) {
         this.path = Paths.get(pathString);
         start();
     }
 
-    public void suspendThread(){
-        suspend();
+
+    public void terminate() {
+        running = false;
     }
 
     public Path getPath() {
@@ -32,7 +35,7 @@ public class WatchFile extends Thread{
                     StandardWatchEventKinds.ENTRY_DELETE,
                     StandardWatchEventKinds.ENTRY_MODIFY);
 
-            while(true){
+            while(running){
                 for(WatchEvent<?> event : key.pollEvents()){
                     System.out.println("Event type " + event.kind() +" File affected " + event.context());
                 }
