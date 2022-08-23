@@ -1,5 +1,7 @@
 package UI;
 
+import Util.Server.SocketServer;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
@@ -20,19 +22,19 @@ public class UIServer extends JFrame{
         });
     }
 
-    private JButton jButtonDanhSachIP;
-    private JButton jbuttonLichSu;
-    private JButton jbuttonGianSat;
-    private JLabel jLablePort;
-    private JLabel jLabel2;
+    private JButton btDanhSachIP;
+    private JButton btLichSu;
+    private JButton btGiamSat;
+    private JLabel lbPort;
+    private JLabel lbIp;
     private JPanel jPanel1;
     private JPanel jPanel2;
     private JScrollPane jScrollPane1;
     private JScrollPane jScrollPane2;
     private JTextField jTextIP;
     private JTextField jTextPort;
-    private JTextPane jTextPane1;
-    private JTree jTreeFolder;
+    private JTextPane tpKetNoi;
+    private JTree treeFolder;
 
 
     private DefaultMutableTreeNode listChildFolder(File file, int level, DefaultMutableTreeNode root){
@@ -67,21 +69,26 @@ public class UIServer extends JFrame{
     }
 
     public UIServer() throws IOException {
-        DefaultMutableTreeNode root = initJTree();
-        ServerSocket socket = new ServerSocket(3200);
         jPanel2 = new JPanel();
-        jLabel2 = new JLabel();
+        lbIp = new JLabel();
         jTextIP = new JTextField();
-        jLablePort = new JLabel();
+        lbPort = new JLabel();
         jTextPort = new JTextField();
         jPanel1 = new JPanel();
         jScrollPane1 = new JScrollPane();
-        jTextPane1 = new JTextPane();
+        tpKetNoi = new JTextPane();
         jScrollPane2 = new JScrollPane();
-        jTreeFolder = new JTree(root);
-        jButtonDanhSachIP = new JButton();
-        jbuttonLichSu = new JButton();
-        jbuttonGianSat = new JButton();
+        treeFolder = new JTree();
+        btDanhSachIP = new JButton();
+        btLichSu = new JButton();
+        btGiamSat = new JButton();
+        SocketServer socketServer = new SocketServer(tpKetNoi);
+        init();
+    }
+
+    public void init() {
+//        DefaultMutableTreeNode root = initJTree();
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(552, 430));
@@ -90,15 +97,16 @@ public class UIServer extends JFrame{
         jPanel2.setMaximumSize(new java.awt.Dimension(32767, 22767));
         jPanel2.setPreferredSize(new java.awt.Dimension(752, 50));
 
-        jLabel2.setText("jLabel2");
+        lbIp.setText("IP");
 
         jTextIP.setText("127.0.0.1");
         jTextIP.setEnabled(false);
 
-        jLablePort.setText("Port");
+        lbPort.setText("Port");
 
-        jTextPort.setText(String.valueOf(socket.getLocalPort()));
+        jTextPort.setText("3000");
         jTextPort.setEnabled(false);
+        tpKetNoi.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -106,11 +114,11 @@ public class UIServer extends JFrame{
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(66, 66, 66)
-                                .addComponent(jLabel2)
+                                .addComponent(lbIp)
                                 .addGap(31, 31, 31)
                                 .addComponent(jTextIP, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(34, 34, 34)
-                                .addComponent(jLablePort)
+                                .addComponent(lbPort)
                                 .addGap(18, 18, 18)
                                 .addComponent(jTextPort, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(43, Short.MAX_VALUE))
@@ -120,25 +128,25 @@ public class UIServer extends JFrame{
                         .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel2)
+                                        .addComponent(lbIp)
                                         .addComponent(jTextIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLablePort)
+                                        .addComponent(lbPort)
                                         .addComponent(jTextPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2);
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jScrollPane1.setViewportView(tpKetNoi);
 
-        jScrollPane2.setViewportView(jTreeFolder);
+        jScrollPane2.setViewportView(treeFolder);
 
-        jButtonDanhSachIP.setText("Danh sách IP Client");
+        btDanhSachIP.setText("Danh sách IP Client");
 
-        jbuttonLichSu.setText("Lịch sử giám sát");
-        jbuttonLichSu.setToolTipText("");
+        btLichSu.setText("Lịch sử giám sát");
+        btLichSu.setToolTipText("");
 
-        jbuttonGianSat.setText("Giám sát");
+        btGiamSat.setText("Giám sát");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -152,9 +160,9 @@ public class UIServer extends JFrame{
                                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(18, 18, 18)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(jButtonDanhSachIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jbuttonLichSu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jbuttonGianSat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addComponent(btDanhSachIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(btLichSu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(btGiamSat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addGap(0, 28, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
@@ -165,11 +173,11 @@ public class UIServer extends JFrame{
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGap(26, 26, 26)
-                                                .addComponent(jButtonDanhSachIP)
+                                                .addComponent(btDanhSachIP)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jbuttonLichSu)
+                                                .addComponent(btLichSu)
                                                 .addGap(18, 18, 18)
-                                                .addComponent(jbuttonGianSat))
+                                                .addComponent(btGiamSat))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.*;
 
 public class WatchFile extends Thread{
-    private Path path;
+    public static Path path;
     private volatile boolean running = true;
 
     public WatchFile(String pathString) {
@@ -17,19 +17,15 @@ public class WatchFile extends Thread{
         running = false;
     }
 
-    public Path getPath() {
-        return path;
+    public static void setPath(String stringPath) {
+        WatchFile.path = Paths.get(stringPath);
     }
 
-    public void setPath(Path path) {
-        this.path = path;
-    }
 
     @Override
     public void run() {
         try{
             WatchService watchService = FileSystems.getDefault().newWatchService();
-//        Path path = Paths.get("D:\\cv");
             WatchKey key = path.register(watchService,
                     StandardWatchEventKinds.ENTRY_CREATE,
                     StandardWatchEventKinds.ENTRY_DELETE,

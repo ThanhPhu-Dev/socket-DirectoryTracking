@@ -1,5 +1,6 @@
 package UI;
 
+import Util.SocketClient;
 import Util.WatchFile;
 
 import javax.swing.*;
@@ -16,8 +17,8 @@ public class UIClient extends JFrame {
     private JTextField tfIP;
     private JTextField tfPort;
     private WatchFile watchFile = null;
-
-
+    SocketClient socketClient = null;
+    private JLabel message;
     public UIClient(){
         initUI();
 
@@ -30,18 +31,17 @@ public class UIClient extends JFrame {
         lbPort = new javax.swing.JLabel();
         tfPort = new javax.swing.JTextField();
         btnKetNoi = new javax.swing.JButton();
+        socketClient = new SocketClient();
+        message = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lbIP.setText("IP");
         lbPort.setText("Port");
 
-        tfIP.setText("");
-        tfPort.setText("");
-
         btnKetNoi.setText("Kết nối");
-        btnKetNoi.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+        btnKetNoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnKetNoiActionPerformed(evt);
             }
         });
@@ -59,15 +59,19 @@ public class UIClient extends JFrame {
                                                         .addComponent(lbIP)
                                                         .addComponent(lbPort))
                                                 .addGap(33, 33, 33)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(tfIP)
-                                                        .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(message)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                .addComponent(tfIP)
+                                                                .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGap(51, 51, 51)
+                                .addContainerGap()
+                                .addComponent(message)
+                                .addGap(22, 22, 22)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(lbIP)
                                         .addComponent(tfIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -77,25 +81,32 @@ public class UIClient extends JFrame {
                                         .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(56, 56, 56)
                                 .addComponent(btnKetNoi)
-                                .addContainerGap(55, Short.MAX_VALUE))
+                                .addContainerGap(71, Short.MAX_VALUE))
         );
+
 
         pack();
         setVisible(true);
     }
 
     private void btnKetNoiActionPerformed(java.awt.event.ActionEvent evt) {
-        //check socket
+        if(!socketClient.connect(tfIP.getText(), Integer.valueOf(tfPort.getText()))){
+            message.setText("kết nối thất bại.");
+            return;
+        }
         if(btnKetNoi.getText().equals("Kết nối")){
             btnKetNoi.setText("Ngắt kết nối");
             tfIP.setEnabled(false);
             tfPort.setEnabled(false);
-            watchFile = new WatchFile("D:\\cv");
+            //            watchFile.terminate();
+
         }else{
             btnKetNoi.setText("Kết nối");
             tfPort.setEnabled(true);
             tfIP.setEnabled(true);
-            watchFile.terminate();
+            message.setText("Kết nối Thành công");
+            //            watchFile = new WatchFile(" C:\\ClientMonitoringSystem\\Data");
+
         }
     }
 
