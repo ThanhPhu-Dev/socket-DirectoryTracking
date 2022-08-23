@@ -1,12 +1,15 @@
 package UI;
 
 import Util.Server.SocketServer;
+import model.Client;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UIServer extends JFrame{
@@ -142,6 +145,11 @@ public class UIServer extends JFrame{
         jScrollPane2.setViewportView(treeFolder);
 
         btDanhSachIP.setText("Danh sách IP Client");
+        btDanhSachIP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btDanhSachIPActionPerformed(evt);
+            }
+        });
 
         btLichSu.setText("Lịch sử giám sát");
         btLichSu.setToolTipText("");
@@ -189,5 +197,15 @@ public class UIServer extends JFrame{
         pack();
     }
 
+    private void btDanhSachIPActionPerformed(java.awt.event.ActionEvent evt) {
+        List<Client> clientList = new ArrayList<>();
+        clientList.add(new Client("127.2.3.1", 2345));
+        clientList.add(new Client("127.3.1.1", 123));
+        clientList.add(new Client("127.4.5.1", 23432545));
+        ClientList clientListFrame = new ClientList(clientList);
+    }
 
+    public static void showDialog(){
+
+    }
 }
