@@ -66,7 +66,7 @@ public class SocketServer extends Thread {
                     public void run() {
                         try {
                             List<FolderTracking> folderTrackings = Util.readFile();
-                            folderTrackings.add(new FolderTracking(inaddr.toString(), "Ket Noi", "Ket Noi Server"));
+                            folderTrackings.add(new FolderTracking(inaddr.toString(), "KET NOI", "Ket Noi Server"));
                             Util.writeFile(folderTrackings);
                         } catch (IOException e) {
                             e.printStackTrace();

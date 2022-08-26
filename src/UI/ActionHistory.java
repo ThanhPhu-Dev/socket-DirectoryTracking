@@ -26,13 +26,14 @@ public class ActionHistory extends JFrame {
         this.init();
         setDataTable(data);
     }
-    public static String[] title = {"STT","IP Client", "Thoi diem", "Action", "Dien giai"};
+    public static String[] title = {"IP Client", "Thoi diem", "Action", "Dien giai"};
     public void setDataTable(List<FolderTracking> data) {
         DefaultTableModel model = new DefaultTableModel(title, 0);
         if (Objects.nonNull(data)) {
-            data.forEach(f -> {
-                model.addRow(new String[]{String.valueOf(f.getStt()), f.getIpClient(), f.getTime().toString(), f.getAction(), f.getDescription()});
-            });
+            for(int i=0;i<data.size();i++){
+                data.get(i).setStt(i+1);
+                model.addRow(new String[]{String.valueOf(data.get(i).getStt()), data.get(i).getTime().toString(), data.get(i).getAction(), data.get(i).getDescription()});
+            }
         }
         this.tbHistory.setModel(model);
     }

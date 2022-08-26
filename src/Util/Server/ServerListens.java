@@ -39,7 +39,7 @@ public class ServerListens extends Thread{
                     InetAddress inaddr = sockaddr.getAddress();
                     try {
                         List<FolderTracking> folderTrackings = Util.readFile();
-                        folderTrackings.add(new FolderTracking(inaddr.toString(), "Ngat ket noi", "Ngat ket Noi Server"));
+                        folderTrackings.add(new FolderTracking(inaddr.toString(), "NGAT KET NOI", "Ngat ket Noi Server"));
                         Util.writeFile(folderTrackings);
                         tpKetNoi.setText(tpKetNoi.getText() + "IP: " + inaddr.toString() + " PORT: " + ss.getPort() + " Ngắt kết nối\n");
                     } catch (IOException e) {
@@ -47,7 +47,7 @@ public class ServerListens extends Thread{
                     }
                     break;
                 }
-
+                this.writeLog(receivedMessage);
             } while (true);
             br.close();
         } catch (IOException e) {
