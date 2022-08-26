@@ -1,18 +1,42 @@
-package Util;
+package Util.Client;
+
+import Util.Constant;
+import Util.WatchFile;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import model.FolderTracking;
 
 import java.io.*;
 import java.net.Socket;
 
 public class SocketClient extends Thread{
-    private Socket s = null;
+    private Socket socket = null;
     private InputStream is = null;
     private BufferedReader br;
     private boolean status = false;
     private String receivedMessage = null;
-    public void SocketClient(){
+    private OutputStream os = null;
+    BufferedWriter bw = null;
+    private ObjectMapper objectMapper = null;
+
+
+    public void initData(){
         try {
-            is=s.getInputStream();
+            is=socket.getInputStream();
+            os=socket.getOutputStream();
+            bw = new BufferedWriter(new OutputStreamWriter(os));
             br=new BufferedReader(new InputStreamReader(is));
+            objectMapper = new ObjectMapper();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendAction(FolderTracking folderTracking){
+        try {
+            String message = objectMapper.writeValueAsString(folderTracking);
+            bw.write(message);
+            bw.newLine();
+            bw.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,15 +71,20 @@ public class SocketClient extends Thread{
 
     }
 
-    public boolean connect(String host, int port){
+    public boolean connect(String host, String port){
 
         try {
-            s = new Socket(host,port);
+            socket = new Socket(host,Integer.valueOf(port));
             this.status = true;
+            initData();
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Connect fail");
             return false;
         }
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 }

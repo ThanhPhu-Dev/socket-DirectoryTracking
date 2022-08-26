@@ -1,16 +1,11 @@
 package UI;
 
-import Util.SocketClient;
+import Util.Client.SocketClient;
 import Util.WatchFile;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class UIClient extends JFrame {
-    public static void main(String[] args) {
-        UIClient a = new UIClient();
-    }
     private JButton btnKetNoi;
     private JLabel lbIP;
     private JLabel lbPort;
@@ -21,7 +16,7 @@ public class UIClient extends JFrame {
     private JLabel message;
     public UIClient(){
         initUI();
-
+        socketClient = new SocketClient();
     }
 
 
@@ -31,7 +26,6 @@ public class UIClient extends JFrame {
         lbPort = new javax.swing.JLabel();
         tfPort = new javax.swing.JTextField();
         btnKetNoi = new javax.swing.JButton();
-        socketClient = new SocketClient();
         message = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -90,7 +84,7 @@ public class UIClient extends JFrame {
     }
 
     private void btnKetNoiActionPerformed(java.awt.event.ActionEvent evt) {
-        if(!socketClient.connect(tfIP.getText(), Integer.valueOf(tfPort.getText()))){
+        if(!socketClient.connect(tfIP.getText(), tfPort.getText())){
             message.setText("kết nối thất bại.");
             return;
         }
@@ -98,14 +92,14 @@ public class UIClient extends JFrame {
             btnKetNoi.setText("Ngắt kết nối");
             tfIP.setEnabled(false);
             tfPort.setEnabled(false);
-            //            watchFile.terminate();
+            watchFile = new WatchFile("C:\\ClientMonitoringSystem\\Data", socketClient);
+
 
         }else{
             btnKetNoi.setText("Kết nối");
             tfPort.setEnabled(true);
             tfIP.setEnabled(true);
-            message.setText("Kết nối Thành công");
-            //            watchFile = new WatchFile(" C:\\ClientMonitoringSystem\\Data");
+            //            watchFile.terminate();
 
         }
     }

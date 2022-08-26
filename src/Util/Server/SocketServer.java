@@ -1,6 +1,8 @@
 package Util.Server;
 
+import Util.Util;
 import model.Client;
+import model.FolderTracking;
 
 import javax.swing.*;
 import java.io.*;
@@ -12,11 +14,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SocketServer extends Thread{
+public class SocketServer extends Thread {
     private ServerSocket s = null;
     private volatile JTextPane tpKetNoi;
     public List<Client> clients = new ArrayList<>();
-    public SocketServer(JTextPane tpKetNoi){
+    private Socket ss = null;
+    public SocketServer(JTextPane tpKetNoi) {
         try {
             this.tpKetNoi = tpKetNoi;
             s = new ServerSocket(3000);
@@ -34,29 +37,49 @@ public class SocketServer extends Thread{
         this.s = s;
     }
 
+    public Socket getSs() {
+        return ss;
+    }
+
+    public void setSs(Socket ss) {
+        this.ss = ss;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
     @Override
     public void run() {
-        try
-        {
-            Socket ss=s.accept(); //synchronous
-//            ServerListens serverListens = new ServerListens(ss);
-            InetSocketAddress sockaddr = (InetSocketAddress)ss.getRemoteSocketAddress();
-            InetAddress inaddr = sockaddr.getAddress();
-            clients.add(new Client(inaddr.getHostAddress(), ss.getPort()));
-            SwingUtilities.invokeAndWait(new Runnable(){
-                public void run()
-                {
-                    tpKetNoi.setText(tpKetNoi.getText() + "IP: "+ inaddr.getHostAddress() + " PORT: " + ss.getPort() + " Kết Nối\n");
-                }
-            });
-        }
-        catch(InterruptedException | InvocationTargetException | IOException e)
-        {
+        try {
+            while (true) {
+                ss = s.accept(); //synchronous
+                ServerListens serverListens = new ServerListens(ss);
+
+                InetSocketAddress sockaddr = (InetSocketAddress) ss.getRemoteSocketAddress();
+                InetAddress inaddr = sockaddr.getAddress();
+                clients.add(new Client(inaddr.toString(), ss.getPort()));
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run() {
+                        try {
+                            List<FolderTracking> folderTrackings = Util.readFile();
+                            folderTrackings.add(new FolderTracking(inaddr.toString(), "Ket Noi", "Ket Noi Server"));
+                            Util.writeFile(folderTrackings);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        tpKetNoi.setText(tpKetNoi.getText() + "IP: " + inaddr.toString() + " PORT: " + ss.getPort() + " Kết Nối\n");
+                    }
+                });
+            }
+        } catch (InterruptedException | InvocationTargetException | IOException e) {
             System.out.println("There're some error");
         }
     }
 
-    public void showConnection(){
-
-     }
 }
