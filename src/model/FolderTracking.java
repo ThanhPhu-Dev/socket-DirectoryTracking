@@ -17,8 +17,9 @@ public class FolderTracking {
     }
 
     public FolderTracking(String IpClient, String action, String des) {
+        this.IpClient = IpClient;
         this.action = action;
-        this.description = this.action + " " + des;
+        this.description = des;
         this.time = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(new Date());
     }
 

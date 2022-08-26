@@ -26,13 +26,13 @@ public class ActionHistory extends JFrame {
         this.init();
         setDataTable(data);
     }
-    public static String[] title = {"IP Client", "Thoi diem", "Action", "Dien giai"};
+    public static String[] title = {"STT", "IP Client", "Thoi diem", "Action", "Dien giai"};
     public void setDataTable(List<FolderTracking> data) {
         DefaultTableModel model = new DefaultTableModel(title, 0);
         if (Objects.nonNull(data)) {
             for(int i=0;i<data.size();i++){
                 data.get(i).setStt(i+1);
-                model.addRow(new String[]{String.valueOf(data.get(i).getStt()), data.get(i).getTime().toString(), data.get(i).getAction(), data.get(i).getDescription()});
+                model.addRow(new String[]{String.valueOf(data.get(i).getStt()),data.get(i).getIpClient(), data.get(i).getTime().toString(), data.get(i).getAction(), data.get(i).getDescription()});
             }
         }
         this.tbHistory.setModel(model);
@@ -92,10 +92,6 @@ public class ActionHistory extends JFrame {
             return;
         }
         switch (value){
-            case "STT":
-                setDataTable(this.data.stream().filter(s -> String.valueOf(s.getStt()).equals(tfFilter.getText()))
-                        .collect(Collectors.toList()));
-                break;
             case "Thời điểm":
                 setDataTable(this.data.stream().filter(s -> s.getTime().equals(tfFilter.getText()))
                         .collect(Collectors.toList()));
