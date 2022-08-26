@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.FolderTracking;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -16,9 +17,11 @@ public class ServerListens extends Thread{
     private Socket ss;
     private String receivedMessage;
     private ObjectMapper objectMapper = null;
-    public ServerListens(Socket s){
+    private JTextPane tpKetNoi = null;
+    public ServerListens(Socket s, JTextPane tpKetNoi){
         ss = s;
         objectMapper = new ObjectMapper();
+        this.tpKetNoi = tpKetNoi;
         start();
     }
 
@@ -30,22 +33,22 @@ public class ServerListens extends Thread{
             is = ss.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
             do {
-                receivedMessage=br.readLine();
-                if (receivedMessage.equalsIgnoreCase("quit"))
-                {
+                receivedMessage = br.readLine();
+                if (receivedMessage.equalsIgnoreCase("quit")) {
                     InetSocketAddress sockaddr = (InetSocketAddress) ss.getRemoteSocketAddress();
                     InetAddress inaddr = sockaddr.getAddress();
                     try {
                         List<FolderTracking> folderTrackings = Util.readFile();
                         folderTrackings.add(new FolderTracking(inaddr.toString(), "Ngat ket noi", "Ngat ket Noi Server"));
                         Util.writeFile(folderTrackings);
+                        tpKetNoi.setText(tpKetNoi.getText() + "IP: " + inaddr.toString() + " PORT: " + ss.getPort() + " Ngắt kết nối\n");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
                 }
-                writeLog(receivedMessage);
-            }while(true);
+
+            } while (true);
             br.close();
         } catch (IOException e) {
             e.printStackTrace();

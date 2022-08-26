@@ -58,7 +58,6 @@ public class SocketServer extends Thread {
         try {
             while (true) {
                 ss = s.accept(); //synchronous
-                ServerListens serverListens = new ServerListens(ss);
 
                 InetSocketAddress sockaddr = (InetSocketAddress) ss.getRemoteSocketAddress();
                 InetAddress inaddr = sockaddr.getAddress();
@@ -76,6 +75,7 @@ public class SocketServer extends Thread {
                         tpKetNoi.setText(tpKetNoi.getText() + "IP: " + inaddr.toString() + " PORT: " + ss.getPort() + " Kết Nối\n");
                     }
                 });
+                ServerListens serverListens = new ServerListens(ss, tpKetNoi);
             }
         } catch (InterruptedException | InvocationTargetException | IOException e) {
             System.out.println("There're some error");

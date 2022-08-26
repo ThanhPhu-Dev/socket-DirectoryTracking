@@ -47,7 +47,7 @@ public class WatchFile extends Thread{
                     StandardWatchEventKinds.ENTRY_DELETE,
                     StandardWatchEventKinds.ENTRY_MODIFY);
 
-            while(true){
+            while(running){
                 for(WatchEvent<?> event : key.pollEvents()){
                     FolderTracking folderTracking = new FolderTracking(event.kind().toString(), event.context().toString());
                     socketClient.sendAction(folderTracking);
@@ -68,9 +68,11 @@ public class WatchFile extends Thread{
                 folderTrackings = new ArrayList<>();
             }
                 folderTrackings.add(data);
-                folderTrackings.forEach(f -> {
-                    model.addRow(new String[]{String.valueOf(f.getStt()), f.getTime().toString(), f.getAction(), f.getDescription()});
-                });
+            for(int i=0;i<folderTrackings.size();i++){
+                folderTrackings.get(i).setStt(i+1);
+                model.addRow(new String[]{String.valueOf(folderTrackings.get(i).getStt()), folderTrackings.get(i).getTime().toString(), folderTrackings.get(i).getAction(), folderTrackings.get(i).getDescription()});
+            }
+
             this.tbHistory.setModel(model);
         } catch (IOException e) {
             e.printStackTrace();

@@ -118,21 +118,20 @@ public class UIClient extends JFrame {
     }
 
     private void btnKetNoiActionPerformed(java.awt.event.ActionEvent evt) {
-        if(!socketClient.connect(tfIP.getText(), tfPort.getText())){
-            message.setText("kết nối thất bại.");
-            return;
-        }
         if(btnKetNoi.getText().equals("Kết nối")){
+            if(!socketClient.connect(tfIP.getText(), tfPort.getText())){
+                message.setText("kết nối thất bại.");
+                return;
+            }
             btnKetNoi.setText("Ngắt kết nối");
             tfIP.setEnabled(false);
             tfPort.setEnabled(false);
             watchFile = new WatchFile("C:\\ClientMonitoringSystem\\Data", socketClient, tbHistory);
-
-
         }else{
             btnKetNoi.setText("Kết nối");
             tfPort.setEnabled(true);
             tfIP.setEnabled(true);
+            socketClient.sendMessage("quit");
             watchFile.terminate();
         }
     }

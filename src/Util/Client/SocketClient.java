@@ -42,6 +42,16 @@ public class SocketClient extends Thread{
         }
     }
 
+    public void sendMessage(String message){
+        try {
+            bw.write(message);
+            bw.newLine();
+            bw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void run() {
         do {
