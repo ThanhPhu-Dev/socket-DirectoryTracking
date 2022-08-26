@@ -66,8 +66,8 @@ public class WatchFile extends Thread{
     public void setDataTable(List<FolderTracking> data) {
         model.setRowCount(0);
         for(int i=0;i<data.size();i++){
-            folderTrackings.get(i).setStt(i+1);
-            model.addRow(new String[]{String.valueOf(folderTrackings.get(i).getStt()), folderTrackings.get(i).getTime().toString(), folderTrackings.get(i).getAction(), folderTrackings.get(i).getDescription()});
+            data.get(i).setStt(i+1);
+            model.addRow(new String[]{String.valueOf(data.get(i).getStt()), data.get(i).getTime().toString(), data.get(i).getAction(), data.get(i).getDescription()});
         }
         this.tbHistory.setModel(model);
     }

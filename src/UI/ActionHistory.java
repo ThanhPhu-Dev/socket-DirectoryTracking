@@ -39,11 +39,9 @@ public class ActionHistory extends JFrame {
     }
 
     private void init() {
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jScrollPane1.setViewportView(tbHistory);
 
-        cbFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "STT", "Thời điểm", "Action", "Ip Client"}));
+        cbFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"Thời điểm", "Action", "Ip Client"}));
 
         btFilter.setText("Tìm Kiếm");
         btFilter.addActionListener(new java.awt.event.ActionListener() {

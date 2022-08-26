@@ -1,17 +1,9 @@
 package UI;
 
 import Util.Client.SocketClient;
-import Util.Util;
 import Util.WatchFile;
-import model.FolderTracking;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UIClient extends JFrame {
     private JButton btnKetNoi;
@@ -50,8 +42,6 @@ public class UIClient extends JFrame {
 
     public void initUI(){
 
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lbIP.setText("IP");
 

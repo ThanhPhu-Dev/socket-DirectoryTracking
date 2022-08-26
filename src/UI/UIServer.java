@@ -3,6 +3,7 @@ package UI;
 import Util.Server.ServerListens;
 import Util.Server.SocketServer;
 import Util.Util;
+import model.Client;
 import model.FolderTracking;
 
 import javax.swing.*;
@@ -151,7 +152,9 @@ public class UIServer extends JFrame{
     }
 
     private void btDanhSachIPActionPerformed(java.awt.event.ActionEvent evt) {
-        ClientList clientListFrame = new ClientList(socketServer.getClients());
+        List<Client> clients = socketServer.getClients();
+        clients.add(new Client("111.111.111.111", 1111));
+        ClientList clientListFrame = new ClientList(clients);
     }
 
     private void btLichSuActionPerformed(java.awt.event.ActionEvent evt) throws IOException {

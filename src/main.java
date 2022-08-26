@@ -9,7 +9,7 @@ public class main {
     public static void main(String[] args) throws IOException {
         UIServer uiServer = new UIServer();
         Thread thread1 = new Thread(() -> {
-            UIClient a = new UIClient(System.getProperty("user.dir") + File.separator + "Data");
+            UIClient a = new UIClient(System.getProperty("user.dir") + File.separator + "Data1");
         });
         thread1.start();
 
