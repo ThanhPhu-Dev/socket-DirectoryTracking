@@ -2,8 +2,12 @@ package UI;
 
 import Util.Client.SocketClient;
 import Util.WatchFile;
+import model.FolderTracking;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import java.util.Objects;
 
 public class UIClient extends JFrame {
     private JButton btnKetNoi;
@@ -13,24 +17,32 @@ public class UIClient extends JFrame {
     private JTextField tfPort;
     private WatchFile watchFile = null;
     SocketClient socketClient = null;
+    private javax.swing.JTable tbHistory;
     private JLabel message;
+    private javax.swing.JScrollPane jScrollPane1;
     public UIClient(){
+        lbIP = new JLabel();
+        tfIP = new JTextField();
+        lbPort = new JLabel();
+        tfPort = new JTextField();
+        btnKetNoi = new JButton();
+        message = new JLabel();
+        jScrollPane1 = new JScrollPane();
+        tbHistory = new JTable();
         initUI();
         socketClient = new SocketClient();
     }
 
 
+
+
     public void initUI(){
-        lbIP = new javax.swing.JLabel();
-        tfIP = new javax.swing.JTextField();
-        lbPort = new javax.swing.JLabel();
-        tfPort = new javax.swing.JTextField();
-        btnKetNoi = new javax.swing.JButton();
-        message = new javax.swing.JLabel();
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lbIP.setText("IP");
+
         lbPort.setText("Port");
 
         btnKetNoi.setText("Kết nối");
@@ -40,44 +52,66 @@ public class UIClient extends JFrame {
             }
         });
 
+        tbHistory.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null}
+                },
+                new String [] {
+                        "Title 1", "Title 2", "Title 3", "Title 4"
+                }
+        ));
+        jScrollPane1.setViewportView(tbHistory);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap(43, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(btnKetNoi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(message)
+                                .addGap(296, 296, 296))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                                .addContainerGap())
+                        .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(lbIP)
-                                                        .addComponent(lbPort))
-                                                .addGap(33, 33, 33)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(message)
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                .addComponent(tfIP)
-                                                                .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                .addGap(40, 40, 40))
+                                                .addGap(69, 69, 69)
+                                                .addComponent(lbIP)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(tfIP, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(27, 27, 27)
+                                                .addComponent(lbPort)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(135, 135, 135)
+                                                .addComponent(btnKetNoi, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(message)
-                                .addGap(22, 22, 22)
+                                .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(lbIP)
-                                        .addComponent(tfIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(35, 35, 35)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(tfIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lbPort)
                                         .addComponent(tfPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(56, 56, 56)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnKetNoi)
-                                .addContainerGap(71, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(24, Short.MAX_VALUE))
         );
 
+        message.getAccessibleContext().setAccessibleName("message");
 
         pack();
         setVisible(true);
@@ -92,15 +126,14 @@ public class UIClient extends JFrame {
             btnKetNoi.setText("Ngắt kết nối");
             tfIP.setEnabled(false);
             tfPort.setEnabled(false);
-            watchFile = new WatchFile("C:\\ClientMonitoringSystem\\Data", socketClient);
+            watchFile = new WatchFile("C:\\ClientMonitoringSystem\\Data", socketClient, tbHistory);
 
 
         }else{
             btnKetNoi.setText("Kết nối");
             tfPort.setEnabled(true);
             tfIP.setEnabled(true);
-            //            watchFile.terminate();
-
+            watchFile.terminate();
         }
     }
 
